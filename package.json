@@ -1,6 +1,6 @@
 {
   "name": "@f5xc-salesdemos/i18n-core",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Canonical locale registry and i18n utilities for the f5xc-salesdemos ecosystem",
   "type": "module",
   "main": "./dist/index.js",
