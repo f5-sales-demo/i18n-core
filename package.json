@@ -1,0 +1,61 @@
+{
+  "name": "@f5xc-salesdemos/i18n-core",
+  "version": "1.0.0",
+  "description": "Canonical locale registry and i18n utilities for the f5xc-salesdemos ecosystem",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./registry": {
+      "types": "./dist/registry.d.ts",
+      "import": "./dist/registry.js"
+    },
+    "./slugs": {
+      "types": "./dist/slugs.d.ts",
+      "import": "./dist/slugs.js"
+    },
+    "./conversions": {
+      "types": "./dist/conversions.d.ts",
+      "import": "./dist/conversions.js"
+    },
+    "./display-names": {
+      "types": "./dist/display-names.d.ts",
+      "import": "./dist/display-names.js"
+    },
+    "./normalize": {
+      "types": "./dist/normalize.d.ts",
+      "import": "./dist/normalize.js"
+    },
+    "./starlight": {
+      "types": "./dist/starlight.d.ts",
+      "import": "./dist/starlight.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check src/ tests/",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "@biomejs/biome": "^1.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/f5xc-salesdemos/i18n-core.git"
+  },
+  "license": "Apache-2.0"
+}
