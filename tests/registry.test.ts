@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { LOCALE_REGISTRY, DEFAULT_LOCALE } from '../src/registry.js';
+import { DEFAULT_LOCALE, LOCALE_REGISTRY } from '../src/registry.js';
 
 describe('LOCALE_REGISTRY', () => {
   it('contains 13 locales', () => {

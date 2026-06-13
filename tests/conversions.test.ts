@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  BCP47_TO_SLUG,
-  SLUG_TO_BCP47,
-  bcp47ToSlug,
-  slugToBcp47,
-} from '../src/conversions.js';
+import { BCP47_TO_SLUG, bcp47ToSlug, SLUG_TO_BCP47, slugToBcp47 } from '../src/conversions.js';
 import { LOCALE_REGISTRY } from '../src/registry.js';
 
 describe('BCP47_TO_SLUG', () => {
