@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { LOCALE_REGISTRY } from '../src/registry.js';
-import { SLUG_LIST, VALID_SLUGS, isValidSlug } from '../src/slugs.js';
+import { isValidSlug, SLUG_LIST, VALID_SLUGS } from '../src/slugs.js';
 
 describe('VALID_SLUGS', () => {
   it('contains all registry slugs', () => {

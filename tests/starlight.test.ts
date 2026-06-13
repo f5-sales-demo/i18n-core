@@ -12,7 +12,7 @@ describe('toStarlightLocales', () => {
   });
 
   it('has label and lang for every locale', () => {
-    for (const [slug, config] of Object.entries(result)) {
+    for (const [_slug, config] of Object.entries(result)) {
       expect(config.label).toBeTruthy();
       expect(config.lang).toBeTruthy();
     }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { LOCALE_DISPLAY_NAMES, LOCALE_NATIVE_NAMES, getLocaleDisplayName } from '../src/display-names.js';
+import { getLocaleDisplayName, LOCALE_DISPLAY_NAMES, LOCALE_NATIVE_NAMES } from '../src/display-names.js';
 import { LOCALE_REGISTRY } from '../src/registry.js';
 
 describe('LOCALE_DISPLAY_NAMES', () => {
