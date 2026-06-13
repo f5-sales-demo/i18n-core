@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { toStarlightLocales } from '../src/starlight.js';
 import { LOCALE_REGISTRY } from '../src/registry.js';
+import { toStarlightLocales } from '../src/starlight.js';
 
 describe('toStarlightLocales', () => {
   const result = toStarlightLocales();
@@ -22,13 +22,13 @@ describe('toStarlightLocales', () => {
     expect(result['pt-br'].lang).toBe('pt-BR');
     expect(result['zh-cn'].lang).toBe('zh-CN');
     expect(result['zh-tw'].lang).toBe('zh-TW');
-    expect(result['en'].lang).toBe('en');
+    expect(result.en.lang).toBe('en');
   });
 
   it('includes dir only for RTL locales', () => {
-    expect(result['ar'].dir).toBe('rtl');
-    expect(result['en'].dir).toBeUndefined();
-    expect(result['fr'].dir).toBeUndefined();
+    expect(result.ar.dir).toBe('rtl');
+    expect(result.en.dir).toBeUndefined();
+    expect(result.fr.dir).toBeUndefined();
   });
 
   it('matches the shape docs-theme expects', () => {
@@ -36,7 +36,7 @@ describe('toStarlightLocales', () => {
       label: 'Português (Brasil)',
       lang: 'pt-BR',
     });
-    expect(result['ar']).toEqual({
+    expect(result.ar).toEqual({
       label: 'العربية',
       lang: 'ar',
       dir: 'rtl',

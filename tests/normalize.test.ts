@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  normalizeLocale,
-  mapToSupportedLocale,
-  SCRIPT_SUBTAG_MAP,
-} from '../src/normalize.js';
+import { SCRIPT_SUBTAG_MAP, mapToSupportedLocale, normalizeLocale } from '../src/normalize.js';
 
 describe('normalizeLocale', () => {
   it('lowercases and replaces underscores with hyphens', () => {
