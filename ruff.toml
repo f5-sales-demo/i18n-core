@@ -1,2 +1,0 @@
-# Empty config — this TypeScript-only repo has no Python code.
-# File exists to prevent super-linter FATAL crash when it looks for ruff.toml.
