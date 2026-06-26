@@ -1,7 +1,7 @@
 {
-  "name": "@f5xc-salesdemos/i18n-core",
+  "name": "@f5-sales-demo/i18n-core",
   "version": "0.0.0-development",
-  "description": "Canonical locale registry and i18n utilities for the f5xc-salesdemos ecosystem",
+  "description": "Canonical locale registry and i18n utilities for the f5-sales-demo ecosystem",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -55,7 +55,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/f5xc-salesdemos/i18n-core.git"
+    "url": "https://github.com/f5-sales-demo/i18n-core.git"
   },
   "license": "Apache-2.0"
 }
