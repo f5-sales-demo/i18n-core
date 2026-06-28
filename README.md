@@ -18,7 +18,7 @@
 [![Repository Settings](https://github.com/f5-sales-demo/i18n-core/actions/workflows/enforce-repo-settings.yml/badge.svg)](https://github.com/f5-sales-demo/i18n-core/actions/workflows/enforce-repo-settings.yml)
 [![License](https://img.shields.io/github/license/f5-sales-demo/i18n-core)](LICENSE)
 
-Canonical locale registry and i18n utilities for the f5-sales-demo ecosystem
+Canonical locale registry and i18n utilities for the f5xc-salesdemos ecosystem
 
 
 ## Documentation
