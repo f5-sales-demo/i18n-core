@@ -1,6 +1,7 @@
 {
   "name": "@f5-sales-demo/i18n-core",
-  "_scope_migrated": true, "version": "0.0.0-development",
+  "_scope_migrated": true,
+  "version": "0.0.0-development",
   "description": "Canonical locale registry and i18n utilities for the f5-sales-demo ecosystem",
   "type": "module",
   "main": "./dist/index.js",
