@@ -29,6 +29,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Dead/orphaned-code gate (WS3 pilot): fails on unused files, exports, or
+      # dependencies. Pinned for reproducibility; config in knip.json.
+      - name: Dead-code check (knip)
+        run: npx --yes knip@6.29.0
+
       - name: Type check
         run: npx tsc --noEmit
 
