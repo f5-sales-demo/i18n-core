@@ -68,11 +68,38 @@ Branch from `main` using one of these naming conventions:
 
 Format: `<prefix>/<issue-number>-short-description`
 
+**Start from current.** Sync with the remote and confirm you are not behind before you branch — or
+plan, or edit. This is a rule, not a formality: a stale base does not announce itself. It surfaces
+later as an unrelated CI failure, and the instinct is then to debug the change's content rather than
+its base. Do not infer freshness from a clean working tree; a checkout twenty commits behind is also
+clean.
+
 ```bash
-git checkout main
-git pull origin main
-git checkout -b feature/42-add-rate-limiting
+git fetch --prune        # if this fails, stop — do not branch from a stale guess
+git switch --no-track -c feature/42-add-rate-limiting origin/main
+git push -u origin HEAD  # on your first push — sets the branch's own upstream
 ```
+
+Branch from `origin/main`, not from local `main`. Local `main` can be *ahead* with unpushed commits,
+which a "not behind" check does not catch, and those commits would silently ride along into your PR.
+Branching from the fetched ref also works when `main` is checked out in another worktree — there,
+`git checkout main` fails outright (`fatal: 'main' is already used by worktree at …`), and a pasted
+`git checkout -b` would quietly branch from whatever you were on instead.
+
+`--no-track` and the `-u` on first push matter together. Without `--no-track`, Git's default
+`branch.autoSetupMerge` makes a branch created from `origin/main` *track* `origin/main`: a bare
+`git pull` would then merge `main` into your feature branch, and the branch would never be marked
+`[gone]` once its own remote branch is deleted — silently defeating the cleanup procedure below.
+
+If you are editing an existing checkout rather than creating a branch, confirm it is current first —
+`git status -sb` should show `## main...origin/main` with no `[behind N]`.
+
+A long-running session goes stale the same way, since nothing re-checks after start. Fetch again
+before branching a second time, and before creating a git worktree — a worktree inherits whatever
+the cached remote ref says, so it can be born behind (see CLAUDE.md).
+
+If a branch falls behind `main` while its PR is open, use the **Update branch** button on the PR
+(`allow_update_branch` is enabled fleet-wide) rather than merging `main` in by hand.
 
 ## Step 3: Make Changes and Commit
 
@@ -100,6 +127,15 @@ git checkout -b feature/42-add-rate-limiting
 
 ## Automated code review
 
+Review happens in two layers. They are not interchangeable, and neither substitutes for the other:
+
+| Layer | What it reviews | Authority |
+| ----- | --------------- | --------- |
+| **Local, pre-PR** | A spec, an implementation plan, or an unpushed branch | Advisory |
+| **CI** | The pull-request diff | **Required and merge-gating** |
+
+### CI review (the gate)
+
 Every downstream pull request is reviewed by a **Claude Code reviewer** running on a self-hosted
 runner. It is a **required status check** (`review / claude-review`) — auto-merge will not merge
 until it passes.
@@ -117,6 +153,29 @@ until it passes.
   and the linked-issue check — this is for machine-generated PRs only. The authoritative prefix
   list lives in `require-linked-issue.yml` and `code-review.yml`; never adopt such a prefix for
   human or agent work.
+
+### Local pre-PR review (advisory second opinion)
+
+A second review layer runs on your own machine **before the pull request exists**. It catches
+problems while they are still cheap to fix — in a spec or a plan, before any code is written.
+
+- **Advisory, never a gate.** It emits no verdict and posts no commit status, so it cannot block a
+  merge or deadlock a required check. When the tooling is absent it is skipped and work continues.
+- **Where it runs.** At the spec and plan review points, before a push that opens or updates a pull
+  request, and after each round of fixes. Reviewing a written spec or implementation plan is its
+  primary use — a document, not a diff.
+- **Verification is mandatory.** A finding counts only once it has been confirmed against the
+  codebase: for code, with a test that fails today; for a document, with a quotation. An AI reviewer
+  misattributes findings to files that do not contain them, and a hallucinated blocking finding can
+  never be fixed — treating it as blocking would stop the loop from ever terminating.
+- **Bounded.** Three iterations maximum, with no-progress detection when two consecutive rounds
+  produce the same blocking set. On either, the outstanding findings go to a human.
+- **Do not reach for a PR-diff reviewer instead.** Reviewing a spec, a plan, or a local branch with
+  a pull-request review tool is the wrong layer — a spec has no diff to review. `CLAUDE.md` names
+  the tool to use, the tools not to use, and the deny rules that enforce it.
+
+The two layers are complementary: the local layer catches issues before the pull request exists and
+costs nothing when it is wrong, while CI remains the gate that decides whether a change merges.
 
 ## Branch Protection Rules
 
