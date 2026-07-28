@@ -20,7 +20,6 @@
 
 Canonical locale registry and i18n utilities for the f5-sales-demo ecosystem
 
-
 ## Documentation
 
 Full documentation is available at **[https://f5-sales-demo.github.io/i18n-core/](https://f5-sales-demo.github.io/i18n-core/)**.
