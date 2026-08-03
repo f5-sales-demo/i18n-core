@@ -7,11 +7,7 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
-permissions:
-  contents: read
-  packages: read
-  pages: write
-  id-token: write
+permissions: {}
 
 concurrency:
   group: pages
@@ -22,4 +18,11 @@ concurrency:
 
 jobs:
   docs:
-    uses: f5-sales-demo/docs-control/.github/workflows/github-pages-deploy.yml@main
+    uses: f5-sales-demo/docs-control/.github/workflows/github-pages-deploy.yml@8617beb254746f5f1c75fe48b6eee17c5db4df41
+    with:
+      content-ref: ${{ github.sha }}
+    permissions:
+      contents: read # read documentation sources
+      packages: read # pull the fleet documentation builder image
+      pages: write # publish the built Pages artifact
+      id-token: write # authenticate the Pages deployment
