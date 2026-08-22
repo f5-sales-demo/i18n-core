@@ -15,7 +15,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,8 +28,6 @@ jobs:
   release:
     name: Semantic Release
     runs-on: [self-hosted, Linux, X64, i18n-core, ubuntu-24.04]
-    # Release credentials are environment-gated.
-    environment: release
     if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, 'chore(release):')"
     steps:
       - name: Checkout
@@ -38,7 +39,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '24.19.0'
+          node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
@@ -50,6 +51,15 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Install semantic-release
+        run: >
+          npm install --no-save
+          semantic-release
+          @semantic-release/commit-analyzer
+          @semantic-release/release-notes-generator
+          @semantic-release/npm
+          @semantic-release/github
+
       - name: Run semantic-release
         run: |
           max_attempts=3
@@ -57,7 +67,7 @@ jobs:
           delay=10
           while [ $attempt -le $max_attempts ]; do
             echo "Attempt $attempt of $max_attempts"
-            if semantic-release; then
+            if npx semantic-release; then
               echo "semantic-release succeeded"
               exit 0
             fi
