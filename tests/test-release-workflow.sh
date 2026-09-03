@@ -6,7 +6,10 @@ WORKFLOW="$ROOT/.github/workflows/release.yml"
 PACKAGE="$ROOT/package.json"
 LOCK="$ROOT/package-lock.json"
 
-fail() { printf 'FAIL: %s\n' "$1" >&2; exit 1; }
+fail() {
+  printf 'FAIL: %s\n' "$1" >&2
+  exit 1
+}
 
 grep -qF 'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1' "$WORKFLOW" || fail 'pinned App-token action is required'
 grep -qF 'app-id: ${{ vars.RELEASE_APP_ID }}' "$WORKFLOW" || fail 'RELEASE_APP_ID is not propagated'
