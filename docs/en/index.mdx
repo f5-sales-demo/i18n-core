@@ -1,0 +1,40 @@
+---
+title: i18n Core Registry & Utilities
+description: Canonical locale registry, slug resolution, and i18n translation utilities for the documentation ecosystem.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+The **@f5-sales-demo/i18n-core** TypeScript package provides the single source of truth for locale registry definitions, BCP-47 / ISO-639 conversions, path normalization, and Astro Starlight internationalization configuration across the fleet.
+
+## Core Modules
+
+<CardGrid>
+  <Card title="Canonical Registry" icon="document">
+    Registry of 13 supported languages including localized display names, writing directions (LTR/RTL), and BCP-47 codes.
+  </Card>
+  <Card title="Slug & Path Resolution" icon="puzzle">
+    Bi-directional slug transformation between root English paths and localized routes.
+  </Card>
+  <Card title="Starlight Adapter" icon="star">
+    Pre-configured Starlight <code>locales</code> configuration builder for <code>astro.config.mjs</code>.
+  </Card>
+</CardGrid>
+
+## Supported Locales
+
+| Locale Code | Language | Native Name | Direction |
+| :--- | :--- | :--- | :--- |
+| `en` | English | English | LTR |
+| `ja` | Japanese | 日本語 | LTR |
+| `ko` | Korean | 한국어 | LTR |
+| `zh-cn` | Simplified Chinese | 简体中文 | LTR |
+| `zh-tw` | Traditional Chinese | 繁體中文 | LTR |
+| `es` | Spanish | Español | LTR |
+| `pt-br` | Brazilian Portuguese | Português (Brasil) | LTR |
+| `fr` | French | Français | LTR |
+| `de` | German | Deutsch | LTR |
+| `it` | Italian | Italiano | LTR |
+| `ar` | Arabic | العربية | RTL |
+| `hi` | Hindi | हिन्दी | LTR |
+| `th` | Thai | ไทย | LTR |
