@@ -12,7 +12,9 @@ fail() {
 }
 
 grep -qF 'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1' "$WORKFLOW" || fail 'pinned App-token action is required'
-grep -qF 'app-id: ${{ vars.RELEASE_APP_ID }}' "$WORKFLOW" || fail 'RELEASE_APP_ID is not propagated'
+grep -qF 'client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}' "$WORKFLOW" || fail 'RELEASE_APP_CLIENT_ID is not propagated'
+! grep -qE '^[[:space:]]+app-id:' "$WORKFLOW" || fail 'deprecated app-id input remains'
+! grep -qF 'RELEASE_APP_ID' "$WORKFLOW" || fail 'obsolete RELEASE_APP_ID remains referenced'
 grep -qF 'private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}' "$WORKFLOW" || fail 'App private key is not propagated'
 grep -qF 'permission-contents: write' "$WORKFLOW" || fail 'App token lacks scoped contents permission'
 grep -qF 'permission-issues: write' "$WORKFLOW" || fail 'App token lacks scoped issues permission'
