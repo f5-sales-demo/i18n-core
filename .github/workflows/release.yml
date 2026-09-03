@@ -15,10 +15,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-  id-token: write
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,13 +25,27 @@ jobs:
   release:
     name: Semantic Release
     runs-on: docs-socketless
+    environment: release
     if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, 'chore(release):')"
     steps:
+      - name: Create release GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: f5-sales-demo
+          repositories: i18n-core
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -45,42 +56,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure Git authentication
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: gh auth setup-git
+
       - name: Build
         run: npm run build
 
       - name: Run tests
         run: npm test
 
-      - name: Install semantic-release
-        run: >
-          npm install --no-save
-          semantic-release
-          @semantic-release/commit-analyzer
-          @semantic-release/release-notes-generator
-          @semantic-release/npm
-          @semantic-release/github
-
       - name: Run semantic-release
-        run: |
-          max_attempts=3
-          attempt=1
-          delay=10
-          while [ $attempt -le $max_attempts ]; do
-            echo "Attempt $attempt of $max_attempts"
-            if npx semantic-release; then
-              echo "semantic-release succeeded"
-              exit 0
-            fi
-            if [ $attempt -eq $max_attempts ]; then
-              echo "semantic-release failed after $max_attempts attempts"
-              exit 1
-            fi
-            echo "Retrying in ${delay}s..."
-            sleep $delay
-            delay=$((delay * 2))
-            attempt=$((attempt + 1))
-          done
+        run: npx --no-install semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
